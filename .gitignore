@@ -41,6 +41,9 @@ Thumbs.db
 .gradle
 !gradle-wrapper.jar
 
+# VS code
+.vscode
+
 # Maven
 target
 
