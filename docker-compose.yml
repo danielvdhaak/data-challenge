@@ -45,11 +45,11 @@ services:
         depends_on:
             - kafka
         environment:
-            EXAMPLE_GOAL: "producer"
-            EXAMPLE_KAFKA_TOPIC: "example"
-            EXAMPLE_KAFKA_SERVER: "kafka:9092"
-            EXAMPLE_ZOOKEEPER_SERVER: "zookeeper:32181"
-            EXAMPLE_PRODUCER_INTERVAL: 100
+            APP_GOAL: "producer"
+            APP_KAFKA_TOPIC: "words"
+            APP_KAFKA_SERVER: "kafka:9092"
+            APP_ZOOKEEPER_SERVER: "zookeeper:32181"
+            APP_PRODUCER_INTERVAL: 100
         networks:
             - bridge
 
@@ -60,10 +60,10 @@ services:
         ports:
             - 4040:4040
         environment:
-            EXAMPLE_GOAL: "consumer"
-            EXAMPLE_KAFKA_TOPIC: "example"
-            EXAMPLE_KAFKA_SERVER: "kafka:9092"
-            EXAMPLE_ZOOKEEPER_SERVER: "zookeeper:32181"
+            APP_GOAL: "consumer"
+            APP_KAFKA_TOPIC: "words"
+            APP_KAFKA_SERVER: "kafka:9092"
+            APP_ZOOKEEPER_SERVER: "zookeeper:32181"
         networks:
             - bridge
         
