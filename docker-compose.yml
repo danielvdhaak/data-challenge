@@ -49,4 +49,6 @@ services:
         ports:
             - 8080:8080
         restart: always
+        volumes:
+            - ~/Projects/data-challenge/nifi/ls-target:/opt/nifi/nifi-current/ls-target
         
