@@ -20,6 +20,9 @@ public class App
             case "producer":
                 KafkaProducerNetflix.main();
                 break;
+            case "consumer":
+                SparkConsumerNetflix.main();
+                break;
             default:
                 logger.error("No valid goal to run.");
                 break;

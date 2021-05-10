@@ -1,39 +1,46 @@
 package com.danielvdhaak;
 
-import org.apache.kafka.clients.producer.*;
-import org.apache.kafka.common.serialization.StringSerializer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.kafka.clients.producer.*;
+import org.apache.kafka.common.serialization.StringSerializer;
 
 import java.util.Properties;
 import java.util.Random;
-import java.util.UUID;
 import java.util.concurrent.ExecutionException;
+
 
 public class KafkaProducerNetflix {
     private static final Logger logger = LogManager.getLogger(KafkaProducerNetflix.class);
 
     public static void main(final String... args) 
     {
-        // Produce random string of words
-        String[] words = new String[]{"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"};
-        Random ran = new Random(System.currentTimeMillis());
+        // Randomizer
+        Random rnd = new Random(System.currentTimeMillis());
 
+        // Initialize key counter
+        int key = 1;
+
+        // Initialize producer class
         final Producer<String, String> producer = createProducer();
-
-        // Get producer interval, otherwise parse default
         int EXAMPLE_PRODUCER_INTERVAL = System.getenv("APP_PRODUCER_INTERVAL") != null ?
                 Integer.parseInt(System.getenv("APP_PRODUCER_INTERVAL")) : 100;
 
         try {
             while (true) {
-                String word = words[ran.nextInt(words.length)];
-                String uuid = UUID.randomUUID().toString();
+                // Generate a random rating between 0 and 5
+                int rating = rnd.nextInt(5);
 
-                ProducerRecord<String, String> record = new ProducerRecord<>(Commons.APP_KAFKA_TOPIC, uuid, word);
+                // Publish producer record to Kafka topic
+                ProducerRecord<String, String> record = new ProducerRecord<>(
+                    Commons.APP_KAFKA_TOPIC, 
+                    String.valueOf(key), 
+                    String.valueOf(rating));
                 RecordMetadata metadata = producer.send(record).get();
 
-                logger.info("Sent ({}, {}) to topic {} @ {}.", uuid, word, Commons.APP_KAFKA_TOPIC, metadata.timestamp());
+                logger.info("Sent ({}, {}) to topic {} @ {}.", key, rating, Commons.APP_KAFKA_TOPIC, metadata.timestamp());
+
+                key++;
 
                 Thread.sleep(EXAMPLE_PRODUCER_INTERVAL);
             }

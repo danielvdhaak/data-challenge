@@ -36,6 +36,18 @@ services:
             APP_ZOOKEEPER_SERVER: "zookeeper:2181"
             APP_PRODUCER_INTERVAL: 100
 
+    spark-consumer:
+        image: data-challenge
+        depends_on:
+            - kafka
+        ports:
+            - "4040:4040"
+        environment: 
+            APP_GOAL: "consumer"
+            APP_KAFKA_TOPIC: "netflix"
+            APP_KAFKA_SERVER: "kafka:29092"
+            APP_ZOOKEEPER_SERVER: "zookeeper:2181"
+
     nifi:
         image: apache/nifi:1.13.2
         ports:
