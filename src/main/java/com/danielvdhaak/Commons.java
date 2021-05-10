@@ -6,9 +6,9 @@ package com.danielvdhaak;
  */
 public class Commons {
     public final static String APP_KAFKA_TOPIC = System.getenv("APP_KAFKA_TOPIC") != null ?
-        System.getenv("APP_KAFKA_TOPIC") : "words";
+        System.getenv("APP_KAFKA_TOPIC") : "netflix";
     public final static String APP_KAFKA_SERVER = System.getenv("APP_KAFKA_SERVER") != null ?
         System.getenv("APP_KAFKA_SERVER") : "localhost:9092";
     public final static String APP_ZOOKEEPER_SERVER = System.getenv("APP_ZOOKEEPER_SERVER") != null ?
-        System.getenv("APP_ZOOKEEPER_SERVER") : "localhost:32181";
+        System.getenv("APP_ZOOKEEPER_SERVER") : "localhost:2181";
 }

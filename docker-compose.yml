@@ -25,10 +25,24 @@ services:
             KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
             KAFKA_CREATE_TOPICS: "netflix:1:1"
     
+    kafka-producer:
+        image: data-challenge
+        depends_on:
+            - kafka
+        environment: 
+            APP_GOAL: "producer"
+            APP_KAFKA_TOPIC: "netflix"
+            APP_KAFKA_SERVER: "kafka:29092"
+            APP_ZOOKEEPER_SERVER: "zookeeper:2181"
+            APP_PRODUCER_INTERVAL: 100
+
     nifi:
         image: apache/nifi:1.13.2
         ports:
             - "8080:8080"
         volumes:
             - ~/Projects/data-challenge/nifi/ls-target:/opt/nifi/nifi-current/ls-target
+            - nifi_data:/opt/nifi/nifi-current/conf/
 
+volumes:
+    nifi_data:
