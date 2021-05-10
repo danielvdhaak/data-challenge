@@ -20,18 +20,16 @@ public class SparkConsumerNetflix {
     private static final Logger logger = LogManager.getLogger(SparkConsumerNetflix.class);
 
     public static void main(final String... args) {
-        // Configure Spark to connect to Kafka
+        // Configure connection to Kafka topic
         Map<String, Object> kafkaParams = new HashMap<>();
         kafkaParams.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, Commons.APP_KAFKA_SERVER);
         kafkaParams.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         kafkaParams.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         kafkaParams.put(ConsumerConfig.GROUP_ID_CONFIG, "SparkConsumerGroup");
 
-        // Configure Spark to listen messages in defined topic
+        // Configure Spark to listen messages in defined topic using JavaStreamingContext
         Collection<String> topics = Arrays.asList(Commons.APP_KAFKA_TOPIC);
         SparkConf conf = new SparkConf().setMaster("local[2]").setAppName("SparkConsumerApplication");
-
-        // Read messages in batch of 30 seconds
         JavaStreamingContext jssc = new JavaStreamingContext(conf, Durations.seconds(5));
 
         // Start reading messages from Kafka and get DStream
@@ -45,7 +43,7 @@ public class SparkConsumerNetflix {
         // Break every message into words and return list of ratings
         JavaDStream<String> ratings = lines.flatMap((FlatMapFunction<String, String>) line -> Arrays.asList(line.split(" ")).iterator());
 
-        // Take every word and return Tuple with (word,1)
+        // Take every rating and return Tuple with (rating,1)
         JavaPairDStream<String, Integer> wordMap = ratings.mapToPair((PairFunction<String, String, Integer>) word -> new Tuple2<>(word, 1));
 
         // Count occurrence of each rating
@@ -60,7 +58,5 @@ public class SparkConsumerNetflix {
         } catch (InterruptedException e) {
             logger.error("An error occurred.", e);
         }
-
-
     }
 }

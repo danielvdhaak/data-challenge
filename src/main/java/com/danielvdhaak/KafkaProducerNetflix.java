@@ -28,8 +28,8 @@ public class KafkaProducerNetflix {
 
         try {
             while (true) {
-                // Generate a random rating between 0 and 5
-                int rating = rnd.nextInt(5);
+                // Generate a random rating between 1 and 5
+                int rating = rnd.nextInt(5) + 1;
 
                 // Publish producer record to Kafka topic
                 ProducerRecord<String, String> record = new ProducerRecord<>(
