@@ -1,60 +1,60 @@
 version: "3.8"
 
 services:
-    zookeeper:
-        image: wurstmeister/zookeeper:3.4.6
-        hostname: zookeeper
-        ports:
-            - "2181:2181"
+  zookeeper:
+    image: wurstmeister/zookeeper:3.4.6
+    hostname: zookeeper
+    ports:
+      - "2181:2181"
     
-    kafka:
-        image: wurstmeister/kafka:2.11-1.1.1
-        hostname: kafka
-        depends_on: 
-            - zookeeper
-        ports:
-            - "9092:9092"
-        environment:
-            KAFKA_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka:29092,LISTENER_DOCKER_EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9092
-            KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka:29092,LISTENER_DOCKER_EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9092
-            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_DOCKER_INTERNAL:PLAINTEXT,LISTENER_DOCKER_EXTERNAL:PLAINTEXT
-            KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_DOCKER_INTERNAL
-            KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-            KAFKA_BROKER_ID: 1
-            KAFKA_LOG4J_LOGGERS: "kafka.controller=INFO,kafka.producer.async.DefaultEventHandler=INFO,state.change.logger=INFO"
-            KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-            KAFKA_CREATE_TOPICS: "netflix:1:1"
+  kafka:
+    image: wurstmeister/kafka:2.11-1.1.1
+    hostname: kafka
+    depends_on: 
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka:29092,LISTENER_DOCKER_EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9092
+      KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka:29092,LISTENER_DOCKER_EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_DOCKER_INTERNAL:PLAINTEXT,LISTENER_DOCKER_EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_DOCKER_INTERNAL
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      KAFKA_BROKER_ID: 1
+      KAFKA_LOG4J_LOGGERS: "kafka.controller=INFO,kafka.producer.async.DefaultEventHandler=INFO,state.change.logger=INFO"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_CREATE_TOPICS: "netflix:1:1"
     
-    kafka-producer:
-        image: data-challenge
-        depends_on:
-            - kafka
-        environment: 
-            APP_GOAL: "producer"
-            APP_KAFKA_TOPIC: "netflix"
-            APP_KAFKA_SERVER: "kafka:29092"
-            APP_ZOOKEEPER_SERVER: "zookeeper:2181"
-            APP_PRODUCER_INTERVAL: 100
+  kafka-producer:
+    image: data-challenge
+    depends_on:
+      - kafka
+    environment: 
+      APP_GOAL: "producer"
+      APP_KAFKA_TOPIC: "netflix"
+      APP_KAFKA_SERVER: "kafka:29092"
+      APP_ZOOKEEPER_SERVER: "zookeeper:2181"
+      APP_PRODUCER_INTERVAL: 100
 
-    spark-consumer:
-        image: data-challenge
-        depends_on:
-            - kafka
-        ports:
-            - "4040:4040"
-        environment: 
-            APP_GOAL: "consumer"
-            APP_KAFKA_TOPIC: "netflix"
-            APP_KAFKA_SERVER: "kafka:29092"
-            APP_ZOOKEEPER_SERVER: "zookeeper:2181"
+  spark-consumer:
+    image: data-challenge
+    depends_on:
+      - kafka
+    ports:
+      - "4040:4040"
+    environment: 
+      APP_GOAL: "consumer"
+      APP_KAFKA_TOPIC: "netflix"
+      APP_KAFKA_SERVER: "kafka:29092"
+      APP_ZOOKEEPER_SERVER: "zookeeper:2181"
 
-    nifi:
-        image: apache/nifi:1.13.2
-        ports:
-            - "8080:8080"
-        volumes:
-            - ~/Projects/data-challenge/nifi/ls-target:/opt/nifi/nifi-current/ls-target
-            - nifi_data:/opt/nifi/nifi-current/conf/
+  nifi:
+    image: apache/nifi:1.13.2
+    ports:
+      - "8080:8080"
+    volumes:
+      - ~/Projects/data-challenge/nifi/ls-target:/opt/nifi/nifi-current/ls-target
+      - nifi_data:/opt/nifi/nifi-current/conf/
 
 volumes:
-    nifi_data:
+  nifi_data:
