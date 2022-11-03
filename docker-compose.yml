@@ -26,7 +26,7 @@ services:
       KAFKA_CREATE_TOPICS: "netflix:1:1"
     
   kafka-producer:
-    image: data-challenge
+    build: .
     depends_on:
       - kafka
     environment: 
@@ -37,7 +37,7 @@ services:
       APP_PRODUCER_INTERVAL: 100
 
   spark-consumer:
-    image: data-challenge
+    build: .
     depends_on:
       - kafka
     ports:
