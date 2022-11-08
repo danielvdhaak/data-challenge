@@ -48,6 +48,8 @@ public class KafkaProducerCrypto {
 
         try {
             while (true) {
+                long start = System.nanoTime();
+
                 // Get data from REST API
                 String responseBody = getHttpResponse(client, method, url);
 
@@ -59,7 +61,12 @@ public class KafkaProducerCrypto {
 
                 logger.debug("Sent record to topic {} @ {}.", metadata.topic(), metadata.timestamp());
 
-                Thread.sleep(EXAMPLE_PRODUCER_INTERVAL);
+                // Determine time to delay
+                float timeElapsed = ((float)(System.nanoTime() - start))*1e-6f;
+                int delay = EXAMPLE_PRODUCER_INTERVAL - (int)timeElapsed >= 0 ? 
+                    EXAMPLE_PRODUCER_INTERVAL - (int)timeElapsed : 0;
+                
+                Thread.sleep(delay);
             }
         } catch (InterruptedException | ExecutionException e) {
             logger.error("An error occurred.", e);

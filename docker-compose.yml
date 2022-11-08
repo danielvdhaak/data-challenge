@@ -33,7 +33,7 @@ services:
       APP_KAFKA_TOPIC: crypto
       APP_KAFKA_SERVER: kafka:9092
       APP_ZOOKEEPER_SERVER: zookeeper:2181
-      APP_PRODUCER_INTERVAL: 100
+      APP_PRODUCER_INTERVAL: 2500
 
   # spark-consumer:
   #   build: .
