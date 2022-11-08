@@ -15,7 +15,7 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.HttpException;
 
 public class KafkaProducerCrypto {
-    private static final Logger logger = LogManager.getLogger(KafkaProducerNetflix.class);
+    private static final Logger logger = LogManager.getLogger(KafkaProducerCrypto.class);
 
     public static void main(final String... args) 
     {
