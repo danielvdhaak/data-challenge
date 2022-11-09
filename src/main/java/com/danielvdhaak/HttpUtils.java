@@ -38,4 +38,16 @@ public class HttpUtils {
 
         return client;
     }
+
+    /**
+     * Creates a HttpMethod object used to perform GET requests.
+     * @param url URL to send HTTP request to
+     * @return the request object to be executed
+     */
+    public static HttpMethod createGetRequest(String url) {
+        HttpMethod request = new GetMethod(url);
+        request.setFollowRedirects(false);
+
+        return request;
+    }
 }
