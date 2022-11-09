@@ -2,6 +2,9 @@ package com.danielvdhaak;
 
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.io.IOException;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
@@ -35,6 +38,27 @@ public class HttpUtilsTest {
         HttpMethod httpMethod = HttpUtils.createGetRequest("Not a URL");
     }
 
+    @Test
+    public void testGetRequest() throws IOException {
+        HttpClient httpClient = HttpUtils.createHttpClient(0);
 
+        HttpMethod response = HttpUtils.sendGetRequest(
+            httpClient, 
+            "https://httpbin.org/get"
+        );
+
+        assertEquals(response.getStatusCode(), 200);
+        assertTrue(response.hasBeenUsed());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testBadGetRequest() {
+        HttpClient httpClient = HttpUtils.createHttpClient(0);
+
+        HttpMethod response = HttpUtils.sendGetRequest(
+            httpClient, 
+            "Not a URL"
+        );
+    }
 
 }

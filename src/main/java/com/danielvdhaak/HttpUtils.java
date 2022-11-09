@@ -50,4 +50,35 @@ public class HttpUtils {
 
         return request;
     }
+
+    /**
+     * Performs an HTTP GET request to a given URL.
+     * @param client A HttpClient object
+     * @see createHttpCient()
+     * @param url The URL to send the request to
+     * @return The HTTP response
+     */
+    public static HttpMethod sendGetRequest(HttpClient client, String url) {
+        // Create request method
+        HttpMethod request = createGetRequest(url);
+
+        // Retrieve response (this populates the request object)
+        try {
+            client.executeMethod(request);
+
+            String status = request.getStatusText();
+            int code = request.getStatusCode();
+
+            logger.debug("[{}] {} ({})", code, status, url);
+        } catch (HttpException he) {
+            logger.error("HTTP error connecting to '" + url + "'");
+            logger.error(he.getMessage());
+            System.exit(-4);
+        } catch (IOException ioe){
+            logger.error("Unable to connect to '" + url + "'");
+            System.exit(-3);
+        }
+
+        return request;
+    }
 }
