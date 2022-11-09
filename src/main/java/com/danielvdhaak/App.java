@@ -18,7 +18,7 @@ public class App
 
         switch (APP_GOAL.toLowerCase()) {
             case "producer":
-                KafkaProducerNetflix.main();
+                KafkaProducerCrypto.main();
                 break;
             case "consumer":
                 SparkConsumerNetflix.main();
