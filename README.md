@@ -1,6 +1,6 @@
 # Kafka streaming pub/sub system
 Project in which I attempted to build a Kafka pub/sub system with Spark and a database, all running using Docker Compose. Consists of:
-* Producer sending random ratings (between 1 and 5) to a Kafka topic
+* A Kafka producer which periodically retrieves recent trade information from the [Binance API](https://binance-docs.github.io/apidocs/spot/en/#recent-trades-list) (BTC-USDT).
 * Streaming Consumer using Apache Spark that counts rating occurences in batches
 
 ## Used software
@@ -19,7 +19,7 @@ mvn package assembly:single
 
 2. Start Docker Compose
 ```
-docker-compose up -d
+docker compose up -d --force-recreate
 ```
 
 ## Checking
@@ -38,5 +38,5 @@ docker logs data-challenge_spark-consumer_1 -f
 ## Stopping
 5. Stop Docker Compose
 ```
-docker-compose down
+docker compose down
 ```
