@@ -29,18 +29,6 @@ public class KafkaProducerCrypto {
         method = new GetMethod(url);
         method.setFollowRedirects(true);
 
-        // Convert to JSONObject
-        // String financialData = null;
-        // try {
-        //     JSONArray jsonArray = new JSONArray(responseBody);
-
-        //     financialData = jsonArray
-        //         .toString();
-        // } catch (JSONException e) {
-        //     logger.error(e.toString());
-        // }
-        // logger.info(financialData);
-
         // Initialize producer class
         final Producer<String, String> producer = createProducer();
         int EXAMPLE_PRODUCER_INTERVAL = System.getenv("APP_PRODUCER_INTERVAL") != null ?
