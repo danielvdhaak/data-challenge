@@ -19,7 +19,7 @@ public class HttpUtilsTest {
     public void testHttpClientTimeout() {
         HttpClient httpClient = HttpUtils.createHttpClient(100);
 
-        assertEquals(httpClient.getHttpConnectionManager().getParams().getConnectionTimeout() ,100);
+        assertEquals(100, httpClient.getHttpConnectionManager().getParams().getConnectionTimeout());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -32,7 +32,7 @@ public class HttpUtilsTest {
         String url = API_PING_ENDPOINT;
         HttpMethod request = HttpUtils.createGetRequest(url);
 
-        assertEquals(request.getURI().toString(), url);
+        assertEquals(url, request.getURI().toString());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -49,7 +49,7 @@ public class HttpUtilsTest {
             API_PING_ENDPOINT
         );
 
-        assertEquals(response.getStatusCode(), 200);
+        assertEquals(200, response.getStatusCode());
         assertTrue(response.hasBeenUsed());
     }
 
@@ -74,7 +74,7 @@ public class HttpUtilsTest {
 
         String body = HttpUtils.parseResponseBody(response);
         
-        assertEquals(body, "{}");
+        assertEquals("{}", body);
     }
 
 }
