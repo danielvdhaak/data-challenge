@@ -84,9 +84,9 @@ public class HttpUtils {
     }
 
     /**
-     * Parses the HTTP response body as a string.
+     * Parses the HTTP response body as a string. This does not handle empty responses.
      * @param response HttpMethod object that has been executed
-     * @return HTTP response body in string format
+     * @return HTTP response body in string format (can be empty/null)
      */
     public static String parseResponseBody(HttpMethod response) {
         // Parse response body as string
@@ -95,11 +95,6 @@ public class HttpUtils {
             body = response.getResponseBodyAsString();
         } catch (IOException e) {
             logger.error("Error parsing response body: " + e.getMessage());
-        }
-
-        // Warn if the response body has no data
-        if (body == null || body.isEmpty()) {
-            logger.warn("No response body found!");
         }
 
         return body;

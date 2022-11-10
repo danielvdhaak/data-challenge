@@ -35,7 +35,11 @@ public class KafkaProducerCrypto {
                 HttpMethod response = HttpUtils.sendGetRequest(client, url);
                 String responseBody = HttpUtils.parseResponseBody(response);
 
-                // Continue on empty string?
+                // Skip on empty response body
+                if (responseBody == null || responseBody.isEmpty()) {
+                    logger.warn("No response body found!");
+                    continue;
+                }
 
                 // Publish producer record to Kafka topic
                 ProducerRecord<String, String> record = new ProducerRecord<>(
