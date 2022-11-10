@@ -44,7 +44,7 @@ public class HttpUtilsTest {
 
         HttpMethod response = HttpUtils.sendGetRequest(
             httpClient, 
-            "https://httpbin.org/get"
+            "https://api.binance.com/api/v3/ping"
         );
 
         assertEquals(response.getStatusCode(), 200);
@@ -59,6 +59,20 @@ public class HttpUtilsTest {
             httpClient, 
             "Not a URL"
         );
+    }
+
+    @Test
+    public void testResponseBodyParse() {
+        HttpClient httpClient = HttpUtils.createHttpClient(0);
+
+        HttpMethod response = HttpUtils.sendGetRequest(
+            httpClient, 
+            "https://api.binance.com/api/v3/ping"
+        );
+
+        String body = HttpUtils.parseResponseBody(response);
+        
+        assertEquals(body, "{}");
     }
 
 }

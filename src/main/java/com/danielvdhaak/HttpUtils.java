@@ -45,6 +45,7 @@ public class HttpUtils {
      * @return the request object to be executed
      */
     public static HttpMethod createGetRequest(String url) {
+        // TODO: Implement other HTTP methods
         HttpMethod request = new GetMethod(url);
         request.setFollowRedirects(false);
 
@@ -74,11 +75,33 @@ public class HttpUtils {
             logger.error("HTTP error connecting to '" + url + "'");
             logger.error(he.getMessage());
             System.exit(-4);
-        } catch (IOException ioe){
+        } catch (IOException ioe) {
             logger.error("Unable to connect to '" + url + "'");
             System.exit(-3);
         }
 
         return request;
+    }
+
+    /**
+     * Parses the HTTP response body as a string.
+     * @param response HttpMethod object that has been executed
+     * @return HTTP response body in string format
+     */
+    public static String parseResponseBody(HttpMethod response) {
+        // Parse response body as string
+        String body = null;
+        try {
+            body = response.getResponseBodyAsString();
+        } catch (IOException e) {
+            logger.error("Error parsing response body: " + e.getMessage());
+        }
+
+        // Warn if the response body has no data
+        if (body == null || body.isEmpty()) {
+            logger.warn("No response body found!");
+        }
+
+        return body;
     }
 }
