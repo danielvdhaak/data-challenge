@@ -13,6 +13,8 @@ import org.apache.commons.httpclient.URIException;
 
 public class HttpUtilsTest {
 
+    private static final String API_PING_ENDPOINT = "https://api.binance.com/api/v3/ping";
+
     @Test
     public void testHttpClientTimeout() {
         HttpClient httpClient = HttpUtils.createHttpClient(100);
@@ -27,7 +29,7 @@ public class HttpUtilsTest {
 
     @Test
     public void testRequestUrl() throws URIException {
-        String url = "https://api.binance.com/api/v3/ping";
+        String url = API_PING_ENDPOINT;
         HttpMethod request = HttpUtils.createGetRequest(url);
 
         assertEquals(request.getURI().toString(), url);
@@ -44,7 +46,7 @@ public class HttpUtilsTest {
 
         HttpMethod response = HttpUtils.sendGetRequest(
             httpClient, 
-            "https://api.binance.com/api/v3/ping"
+            API_PING_ENDPOINT
         );
 
         assertEquals(response.getStatusCode(), 200);
@@ -67,7 +69,7 @@ public class HttpUtilsTest {
 
         HttpMethod response = HttpUtils.sendGetRequest(
             httpClient, 
-            "https://api.binance.com/api/v3/ping"
+            API_PING_ENDPOINT
         );
 
         String body = HttpUtils.parseResponseBody(response);
