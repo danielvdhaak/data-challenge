@@ -1,6 +1,5 @@
 package com.danielvdhaak;
 
-import java.io.*;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 
@@ -11,23 +10,17 @@ import org.apache.kafka.common.serialization.StringSerializer;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.HttpException;
 
 public class KafkaProducerCrypto {
     private static final Logger logger = LogManager.getLogger(KafkaProducerCrypto.class);
 
     public static void main(final String... args) 
     {
+        // Declare API endpoint
         String url = "https://api.binance.com/api/v3/trades?symbol=BTCUSDT&limit=50";
         
         // Create singular HttpClient object
-        HttpClient client = createHttpClient(5000);
-
-        // Create GET method object
-        HttpMethod method = null;
-        method = new GetMethod(url);
-        method.setFollowRedirects(true);
+        HttpClient client = HttpUtils.createHttpClient(0);
 
         // Initialize producer class
         final Producer<String, String> producer = createProducer();
@@ -38,8 +31,11 @@ public class KafkaProducerCrypto {
             while (true) {
                 long start = System.nanoTime();
 
-                // Get data from REST API
-                String responseBody = getHttpResponse(client, method, url);
+                // Send GET request
+                HttpMethod response = HttpUtils.sendGetRequest(client, url);
+                String responseBody = HttpUtils.parseResponseBody(response);
+
+                // Continue on empty string?
 
                 // Publish producer record to Kafka topic
                 ProducerRecord<String, String> record = new ProducerRecord<>(
@@ -47,7 +43,7 @@ public class KafkaProducerCrypto {
                     responseBody);
                 RecordMetadata metadata = producer.send(record).get();
 
-                logger.debug("Sent record to topic {} @ {}.", metadata.topic(), metadata.timestamp());
+                logger.info("Sent record to topic {} @ {}.", metadata.topic(), metadata.timestamp());
 
                 // Determine time to delay
                 float timeElapsed = ((float)(System.nanoTime() - start))*1e-6f;
@@ -71,33 +67,5 @@ public class KafkaProducerCrypto {
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         return new KafkaProducer<>(props);
-    }
-
-    private static HttpClient createHttpClient(int timeout) {
-        HttpClient client = new HttpClient();
-
-        // Establish a connection with 5 seconds
-        client.getHttpConnectionManager().
-            getParams().setConnectionTimeout(timeout);
-
-        return client;
-    }
-
-    private static String getHttpResponse(HttpClient client, HttpMethod method, String url) {
-        // Retrieve response
-        String responseBody = null;
-        try {
-            client.executeMethod(method);
-            responseBody = method.getResponseBodyAsString();
-        } catch (HttpException he) {
-            logger.error("HTTP error connecting to '" + url + "'");
-            logger.error(he.getMessage());
-            System.exit(-4);
-        } catch (IOException ioe){
-            logger.error("Unable to connect to '" + url + "'");
-            System.exit(-3);
-        }
-
-        return responseBody;
     }
 }
