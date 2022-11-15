@@ -16,6 +16,7 @@ public class SparkConsumerCrypto {
         SparkSession spark = SparkSession
         .builder()
         .appName("SparkCrypto")
+        .config("spark.master", "local[2]")
         .getOrCreate();
 
         Dataset<Row> df = spark
