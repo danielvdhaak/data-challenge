@@ -147,6 +147,7 @@
     <factorypathentry kind="VARJAR" id="M2_REPO/joda-time/joda-time/2.9.9/joda-time-2.9.9.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/com/carrotsearch/hppc/0.7.2/hppc-0.7.2.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/com/vlkan/flatbuffers/1.2.0-3f79e055/flatbuffers-1.2.0-3f79e055.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/apache/spark/spark-sql-kafka-0-10_2.11/2.4.7/spark-sql-kafka-0-10_2.11-2.4.7.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/apache/spark/spark-streaming_2.11/2.4.7/spark-streaming_2.11-2.4.7.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/apache/spark/spark-streaming-kafka-0-10_2.11/2.4.7/spark-streaming-kafka-0-10_2.11-2.4.7.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/com/101tec/zkclient/0.11/zkclient-0.11.jar" enabled="true" runInBatchMode="false"/>
