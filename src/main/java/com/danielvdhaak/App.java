@@ -21,7 +21,7 @@ public class App
                 KafkaProducerCrypto.main();
                 break;
             case "consumer":
-                SparkConsumerNetflix.main();
+                SparkConsumerCrypto.main();
                 break;
             default:
                 logger.error("No valid goal to run.");

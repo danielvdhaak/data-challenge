@@ -35,14 +35,14 @@ services:
       APP_ZOOKEEPER_SERVER: zookeeper:2181
       APP_PRODUCER_INTERVAL: 2500
 
-  # spark-consumer:
-  #   build: .
-  #   depends_on:
-  #     - kafka
-  #   ports:
-  #     - "4040:4040"
-  #   environment: 
-  #     APP_GOAL: consumer
-  #     APP_KAFKA_TOPIC: netflix
-  #     APP_KAFKA_SERVER: kafka:9092
-  #     APP_ZOOKEEPER_SERVER: zookeeper:2181
+  spark-consumer:
+    build: .
+    depends_on:
+      - kafka
+    ports:
+      - "4040:4040"
+    environment: 
+      APP_GOAL: consumer
+      APP_KAFKA_TOPIC: crypto
+      APP_KAFKA_SERVER: kafka:9092
+      APP_ZOOKEEPER_SERVER: zookeeper:2181
