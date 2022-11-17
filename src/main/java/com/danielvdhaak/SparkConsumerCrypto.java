@@ -29,7 +29,7 @@ public class SparkConsumerCrypto {
 
         // Start query that prints df
         StreamingQuery query = df.writeStream()
-            .outputMode("complete")
+            .outputMode("append")
             .format("console")
             .start();
 
