@@ -53,6 +53,9 @@ build
 bin
 app
 
+# Data
+/data
+
 # Other
 *.swp
 *.bak
