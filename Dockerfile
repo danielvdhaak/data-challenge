@@ -1,10 +1,11 @@
-FROM openjdk:8-jre-alpine
-LABEL maintainer="danielvdhaak@gmail.com"
+FROM maven:alpine
 
-RUN apk add --no-cache bash libc6-compat
+WORKDIR /usr/src/app
+COPY pom.xml .
+RUN mvn -B -s /usr/share/maven/ref/settings-docker.xml dependency:resolve
+RUN mvn -B -s /usr/share/maven/ref/settings-docker.xml dependency:resolve-plugins
 
-WORKDIR /
-COPY wait-for-it.sh wait-for-it.sh
-COPY target/data-challenge-1.0-SNAPSHOT-jar-with-dependencies.jar data-challenge.jar
-
-CMD ./wait-for-it.sh -s -t 30 $APP_ZOOKEEPER_SERVER -- ./wait-for-it.sh -s -t 30 $APP_KAFKA_SERVER -- java -Xmx512m -jar data-challenge.jar
+COPY . .
+RUN mvn -B -s /usr/share/maven/ref/settings-docker.xml clean install -Dgoal=exec:java
+RUN mvn -B -s /usr/share/maven/ref/settings-docker.xml package
+CMD ./wait-for-it.sh -s -t 30 $APP_ZOOKEEPER_SERVER -- ./wait-for-it.sh -s -t 30 $APP_KAFKA_SERVER -- mvn exec:java
