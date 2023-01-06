@@ -65,6 +65,18 @@
       <version>2.4.1</version>
     </dependency>
 
+    <!-- Cassandra -->
+    <dependency>
+      <groupId>com.datastax.cassandra</groupId>
+      <artifactId>cassandra-driver-core</artifactId>
+      <version>3.11.3</version>
+    </dependency>
+    <dependency>
+      <groupId>org.cassandraunit</groupId>
+      <artifactId>cassandra-unit</artifactId>
+      <version>4.3.1.0</version>
+    </dependency>
+
     <!-- Logging -->
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
