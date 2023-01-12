@@ -1,9 +1,13 @@
 package com.danielvdhaak.cassandra;
 
+import java.util.*;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.datastax.driver.core.Session;
+import com.datastax.driver.core.ResultSet;
+import com.datastax.driver.core.Row;
 
 public class Keyspace {
     private static final Logger logger = LogManager.getLogger(Connector.class);
@@ -41,6 +45,22 @@ public class Keyspace {
     public void use(String keyspace) {
         session.execute("USE " + keyspace);
         logger.info("Cassandra - Using Keyspace '" + keyspace + "' for current session");
+    }
+
+    /**
+     * Returns a list of all Keyspaces in the cluster.
+     * 
+     * @return String list of all Keyspaces in the cluster.
+     */
+    public List<String> list() {
+        ResultSet rs = session.execute("SELECT * FROM system_schema.keyspaces;");
+
+        List<String> keyspaces = new ArrayList<String>();
+        for (Row r : rs) {
+            keyspaces.add(r.getString("keyspace_name"));
+        }
+
+        return keyspaces;
     }
 
     /**
