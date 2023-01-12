@@ -37,8 +37,8 @@ public class Connector {
         // Start connection
         session = cluster.connect();
         logger.info(
-            "Successfully found Cassandra cluster " + cluster.getClusterName() 
-            + " via contact point " + node + ":" + (port != null ? port : "9042")
+            "Cassandra - Successfully found cluster '" + cluster.getClusterName() 
+            + "' via contact point " + node + ":" + (port != null ? port : "9042")
         );
         
         // Retrieve addresses of hosts (e.g. cluster nodes)
@@ -70,6 +70,6 @@ public class Connector {
     public void close() {
         session.close();
         cluster.close();
-        logger.info("Connection to Cassandra cluster successfully closed!");
+        logger.info("Cassandra - Connection to cluster successfully closed");
     }
 }

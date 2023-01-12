@@ -1,8 +1,13 @@
 package com.danielvdhaak.cassandra;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.datastax.driver.core.Session;
 
 public class Keyspace {
+    private static final Logger logger = LogManager.getLogger(Connector.class);
+
     private Session session;
 
     public Keyspace(Session session) {
@@ -23,8 +28,7 @@ public class Keyspace {
             .append("};");
 
         final String query = sb.toString();
-
-        session.execute(query);
+        logger.info("Cassandra - Created Keyspace '" + keyspace + "'");
     }
 
     /**
@@ -36,6 +40,7 @@ public class Keyspace {
      */
     public void use(String keyspace) {
         session.execute("USE " + keyspace);
+        logger.info("Cassandra - Using Keyspace '" + keyspace + "' for current session");
     }
 
     /**
@@ -51,5 +56,6 @@ public class Keyspace {
         final String query = sb.toString();
 
         session.execute(query);
+        logger.info("Cassandra - Deleted Keyspace '" + keyspace + "'");
     }
 }
