@@ -25,15 +25,15 @@ public class Keyspace {
      * @param keyspace the name of the Keyspace
      * @param replicas the replication factor applied to the entire cluster
      */
-    public void create(String keyspace, int replicas) {
+    public void create(String name, int replicas) {
         StringBuilder sb = new StringBuilder("CREATE KEYSPACE IF NOT EXISTS ")
-            .append(keyspace)
+            .append(name)
             .append(" WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : ")
             .append(replicas)
             .append("};");
 
         final String query = sb.toString();
-        logger.info("Cassandra - Created Keyspace '" + keyspace + "'");
+        logger.info("Cassandra - Created Keyspace '" + name + "'");
     }
 
     /**
