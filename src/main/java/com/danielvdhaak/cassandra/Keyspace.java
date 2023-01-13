@@ -13,6 +13,7 @@ public class Keyspace {
     private static final Logger logger = LogManager.getLogger(Connector.class);
 
     private Session session;
+    private String currentKeyspace;
 
     public Keyspace(Session session) {
         this.session = session;
@@ -40,17 +41,18 @@ public class Keyspace {
      * All subsequent operations on tables and indexes are in the context of the named Keyspace, 
      * unless otherwise specified or until the client connection is terminated or another USE statement is issued.
      * 
-     * @param keyspace the name of the Keyspace to use.
+     * @param keyspace the name of the Keyspace to use
      */
     public void use(String keyspace) {
         session.execute("USE " + keyspace);
+        this.currentKeyspace = keyspace;
         logger.info("Cassandra - Using Keyspace '" + keyspace + "' for current session");
     }
 
     /**
      * Returns a list of all Keyspaces in the cluster.
      * 
-     * @return String list of all Keyspaces in the cluster.
+     * @return String list of all Keyspaces in the cluster
      */
     public List<String> list() {
         ResultSet rs = session.execute("SELECT * FROM system_schema.keyspaces;");
@@ -67,7 +69,7 @@ public class Keyspace {
      * Delete a specified Cassandra Keyspace. Results in the immediate removal of the Keyspace, 
      * includnig all tables and data contained in the Keyspace.
      * 
-     * @param keyspace the name of the Keyspace to delete.
+     * @param keyspace the name of the Keyspace to delete
      */
     public void delete(String keyspace) {
         StringBuilder sb = new StringBuilder("DROP KEYSPACE ")
@@ -77,5 +79,14 @@ public class Keyspace {
 
         session.execute(query);
         logger.info("Cassandra - Deleted Keyspace '" + keyspace + "'");
+    }
+
+    /**
+     * Returns the currently used Keyspace, following the USE command.
+     * 
+     * @return the current Keyspace
+     */
+    public String getCurrent() {
+        return this.currentKeyspace;
     }
 }
