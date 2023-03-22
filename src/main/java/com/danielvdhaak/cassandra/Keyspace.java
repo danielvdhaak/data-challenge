@@ -10,7 +10,7 @@ import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 
 public class Keyspace {
-    private static final Logger logger = LogManager.getLogger(Connector.class);
+    private static final Logger logger = LogManager.getLogger(Keyspace.class);
 
     private Session session;
     private String currentKeyspace;
