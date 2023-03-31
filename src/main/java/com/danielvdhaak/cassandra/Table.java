@@ -13,37 +13,35 @@ public class Table {
     private static final Logger logger = LogManager.getLogger(Table.class);
 
     private Session session;
+    private String keyspace;
+    private String name;
+    private boolean ifNotExists = false;
+    private HashMap<String, String> columns;
+    private PrimaryKey primaryKey;
 
-    public Table(Session session) {
+    public Table(Session session, String name) {
         this.session = session;
+        this.name = name;
     }
 
-    /**
-     * Creates a Cassandra Table.
-     * 
-     * @param name the name of the Table
-     * @param columns the columns in format <name, type>, where PRIMARY KEY can be added to type
-     * @param ifNotExists whether to override the error when the Table already exists
-     */
-    public void create(String name, HashMap<String, String> columns, boolean ifNotExists) {
-        StringBuilder sb = new StringBuilder("CREATE TABLE ");
-        if (ifNotExists) {
-            sb.append("IF NOT EXISTS ");
-        }
+    public Table setKeyspace(String keyspace) {
+        this.keyspace = keyspace;
+        return this;
+    }
 
-        // Add name and columns
-        sb.append(name).append(" ( ");
-        for (Map.Entry<String, String> entry: columns.entrySet()) {
-            sb.append(entry.getKey())
-                .append(" ")
-                .append(entry.getValue())
-                .append(",");
-        }
-        sb.append(" )");
+    public Table ifNotExists() {
+        this.ifNotExists = true;
+        return this;
+    }
 
-        final String query = sb.toString();
-        session.execute(query);
-        logger.info("Cassandra - Created Table '" + name + "'");
+    public Table addColumn(String name, String type) {
+        this.columns.put(name, type);
+        return this;
+    }
+
+    public Table setPrimaryKey(PrimaryKey primaryKey) {
+        this.primaryKey = primaryKey;
+        return this;
     }
 
     /**
@@ -111,5 +109,10 @@ public class Table {
         final String query = sb.toString();
         session.execute(query);
         logger.info("Cassandra - Deleted Table '" + table + "'");
+    }
+
+    public class PrimaryKey {
+        private String singleKey;
+        private ArrayList<String> 
     }
 }
